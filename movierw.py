@@ -20,10 +20,10 @@ class NN_Movie_Review(object):
 			if aux > self.vocab_size:
 				aux = 2
 			mylist.append(aux)
-		print(mylist)
 		return mylist
 	
 	def test(self,text):
+		text = text.lower()
 		messagearray = self.encode_review(text)
 		messagearray = [messagearray]
 		messagearray = keras.preprocessing.sequence.pad_sequences(messagearray,
@@ -31,6 +31,7 @@ class NN_Movie_Review(object):
 														padding='post',
 														maxlen=256)
 		prediction = self.model.predict(messagearray)
+		print("Text: " + text)
 		print("Predictions goes from 0(bad review) to 1(good review)")
 		if np.round(prediction[0]) == 1:
 			print("Your review is a good comment because the final result was:")
@@ -81,10 +82,10 @@ class NN_Movie_Review(object):
 
 		#Validation data, Data on which to evaluate the loss and any modal metrics at the end of each epoch
 		#Verbosity mode (0 = silent, 1 = progress bar, 2 = one line per epoch).
-		self.epochs = input("N of epochs(rec:40) --> ")
+		#self.epochs = input("N of epochs(rec:40) --> ")
 		self.history = self.model.fit(partial_x_train,
 							partial_y_train,
-							epochs=int(self.epochs),
+							epochs=40,
 							batch_size=512,
 							validation_data=(x_val, y_val),
 							verbose=1)
